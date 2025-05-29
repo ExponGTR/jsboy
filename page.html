@@ -1,0 +1,143 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset=utf-8>
+    <title>GB Emulator by Adil and Rounak</title>
+    <style>
+        body {
+            background: #1a1a1a;
+            color: #ffffff;
+            margin: 20px;
+            font-family: monospace;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .canvas-container {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        canvas {
+            width: 480px;
+            height: 432px;
+            border: 3px solid #5185fe;
+            image-rendering: -moz-crisp-edges;
+            image-rendering: -webkit-crisp-edges;
+            image-rendering: pixelated;
+            image-rendering: crisp-edges;
+        }
+
+        .controls {
+            margin: 15px 0;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .monitors-container {
+            display: flex;
+            gap: 20px;
+            margin-top: 20px;
+            justify-content: center;
+            width: 100%;
+            max-width: 1400px;
+        }
+
+        .debug-panel {
+            background: #2d2d2d;
+            padding: 15px;
+            border-radius: 8px;
+            overflow-y: auto;
+        }
+
+        .memory-monitor {
+            width: 800px;
+            height: 500px;
+        }
+
+        .io-monitor {
+            width: 300px;
+            height: 500px;
+        }
+
+        .stack-panel {
+            width: 300px;
+            height: 500px;
+        }
+
+        .debug-panel h3 {
+            color: #5185fe;
+            margin: 0 0 10px 0;
+        }
+
+        button, input[type='file'] {
+            background: #3d3d3d;
+            color: white;
+            border: 1px solid #5185fe;
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover, input[type='file']:hover {
+            background: #4d4d4d;
+        }
+
+        pre {
+            margin: 0;
+            white-space: pre-wrap;
+            word-break: break-word;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+
+        .registers {
+            position: absolute;
+            right: 20px;
+            top: 120px;
+            background: #2d2d2d;
+            padding: 15px;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="canvas-container">
+        <canvas id="display" width="160" height="144" onclick="runto(1);"></canvas>
+    </div>
+
+    <div class="controls">
+        <!--button onclick="cpu(); debugData(); return false">CPU</button-->
+        <button onclick="runto(0x10000);return false">Run</button>
+        <button onclick="requestStop=true; return false">Stop</button>
+        <!--button onclick="qwert=debugData; debugData=asdf; asdf=qwert; return false">Debug</button-->
+        <input type="file" accept=".gb" id="fileinput" onchange="openFile(event)">
+    </div>
+
+    <div class="monitors-container">
+        <div class="debug-panel memory-monitor">
+            <h3>Memory Monitor</h3>
+            <pre id="memory"></pre>
+            <pre id="registers" class="registers"></pre>
+        </div>
+        <div class="debug-panel io-monitor">
+            <h3>I/O Monitor</h3>
+            <pre id="io"></pre>
+        </div>
+        <div class="debug-panel stack-panel">
+            <h3>Stack Trace</h3>
+            <pre id="stack"></pre>
+        </div>
+    </div>
+
+    <pre id="out"></pre>
+
+    <script src="emu.js"></script>
+    <script>
+        if (fileinput.files.length) openFile({"target":{"files":fileinput.files}})
+    </script>
+</body>
+</html>
